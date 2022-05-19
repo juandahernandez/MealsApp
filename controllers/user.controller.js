@@ -96,7 +96,14 @@ exports.getOrderById = catchAsync(async (req, res, next) => {
 
   const order = await Order.findOne({
     where: { id, userId: sessionUser.id },
-    include: [{ model: Meal, include: [{ model: Restaurant }] }]
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    include: [
+      {
+        model: Meal,
+        attributes: ['id', 'name', 'price'],
+        include: [{ model: Restaurant, attributes: ['id', 'name', 'address'] }]
+      }
+    ]
   });
 
   res.status(200).json({

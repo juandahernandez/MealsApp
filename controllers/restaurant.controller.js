@@ -31,7 +31,7 @@ exports.getAllRestaurants = catchAsync(async (req, res, next) => {
   const restaurants = await Restaurant.findAll({
     where: { status: 'active' },
     include: [
-      { model: Meal },
+      { model: Meal, attributes: ['id', 'name', 'price', 'status'] },
       { model: Review, attributes: ['id', 'userId', 'comment', 'rating'] }
     ]
   });

@@ -18,7 +18,7 @@ const initModels = () => {
   Restaurant.hasMany(Meal);
   Meal.belongsTo(Restaurant);
 
-  Order.hasOne(Meal);
+  Order.hasOne(Meal, { foreignKey: 'restaurantId' });
   Meal.belongsTo(Order);
 };
 

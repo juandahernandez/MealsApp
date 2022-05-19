@@ -24,7 +24,7 @@ const {
   updateMeal,
   deleteMeal
 } = require('../controllers/meal.controller');
-const { application } = require('express');
+
 
 const router = express.Router();
 
@@ -32,7 +32,7 @@ router.get('/', getAllMeals);
 
 router.get('/:id', mealExists, getMealById);
 
-application.use(protectToken);
+router.use(protectToken);
 
 router.post(
   '/:id',

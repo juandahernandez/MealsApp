@@ -1,7 +1,6 @@
 //models
 const { Order } = require('../models/order.model');
 const { Restaurant } = require('../models/restaurant.model');
-//const { User } = require('../models/user.model');
 const { Meal } = require('../models/meal.model');
 
 // util
@@ -9,9 +8,12 @@ const { catchAsync } = require('../util/catchAsync');
 const { AppError } = require('../util/appError');
 
 exports.newOrder = catchAsync(async (req, res, next) => {
-  const { quantity } = req.body;
-  const { meal } = req;
+  const { quantity, mealId } = req.body;
   const { sessionUser } = req;
+
+  const meal = await Meal.findOne({
+    where: { id: mealId }
+  });
 
   if (!quantity) {
     return next(new AppError(400, 'insert valid data'));
@@ -41,9 +43,13 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
 
   const orders = await Order.findAll({
     where: { userId: sessionUser.id },
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
     include: [
-      { model: Meal, include: [{ model: Restaurant }] }
-      // { model: User, attributes: ['id', 'name'] }
+      {
+        model: Meal,
+        attributes: ['id', 'name', 'price'],
+        include: [{ model: Restaurant, attributes: ['id', 'name', 'address'] }]
+      }
     ]
   });
 

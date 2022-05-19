@@ -21,9 +21,9 @@ const router = express.Router();
 
 router.use(protectToken);
 
-router.post('/', mealExists, userExists, newOrder);
+router.post('/', newOrder);
 
-router.get('/me', userExists, getAllOrders);
+router.get('/me', getAllOrders);
 
 router.patch('/:id', orderExists, userExists, protectAccountOwner, updateOrder);
 
